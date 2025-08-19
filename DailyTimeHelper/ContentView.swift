@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var currentTime = Date()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Time")
+                .font(.title)
+                .fontWeight(.medium)
+                .fontDesign(.monospaced)
+            
+            // Dynamic time that updates every second
+            Text("\(currentTime)")
+                .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
+                    currentTime = Date()
+                }
         }
         .padding()
     }
