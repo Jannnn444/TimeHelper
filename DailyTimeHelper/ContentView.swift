@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var currentTime = Date()
     @State private var shadowLocation: CGFloat = 0
+    @State private var isAnimating = false
     
     var body: some View {
         VStack(spacing: 30) {
@@ -45,9 +46,8 @@ struct ContentView: View {
                     }
             })
             
-            // Optional: Auto-animate button
-            Button("Start Auto Animation") {
-                startAutoAnimation()
+            Button(isAnimating ? "Stop Animation" : "Start Auto Animation") {
+                toggleAnimation()
             }
             .foregroundColor(.green)
             .padding()
@@ -73,6 +73,20 @@ struct ContentView: View {
     private func startAutoAnimation() {
         withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
             shadowLocation = 50
+        }
+    }
+    
+    private func toggleAnimation() {
+        if isAnimating {
+            withAnimation(.easeOut(duration: 0.5)) {
+                shadowLocation = 0
+            }
+            isAnimating = false
+        } else {
+            isAnimating = true
+            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                shadowLocation = 50
+            }
         }
     }
 }
